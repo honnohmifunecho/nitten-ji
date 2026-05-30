@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>本納・御船町の夏祭り 令和8年</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    /* ===== 開催可否バナー（運営が編集する） ===== */
+    #status-banner {
+      background: #2e7d32;
+      color: #fff;
+      text-align: center;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      display: none; /* 平常時は非表示。中止時は block に変更 */
+    }
+    #status-banner.show { display: block; }
+    #status-banner.cancel { background: #c62828; }
+    #status-banner.partial { background: #e65100; }
+
+    /* ===== ヒーローセクション ===== */
+    .hero {
+      background: linear-gradient(160deg, #43e343 0%, #a8f5a8 50%, #ffffff 100%);
+      text-align: center;
+      padding: 48px 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '🎆🎇🎆';
+      position: absolute;
+      top: 10px;
+      left: 0; right: 0;
+      font-size: 1.4rem;
+      letter-spacing: 8px;
+      opacity: 0.4;
+    }
+
+    .hero-label {
+      display: inline-block;
+      background: #7030a0;
+      color: #ffe600;
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 4px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: #7030a0;
+      line-height: 1.2;
+      text-shadow: 3px 3px 0 #fff, -1px -1px 0 #fff;
+      margin-bottom: 6px;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+      color: #5a2080;
+      font-weight: bold;
+      margin-bottom: 20px;
+      letter-spacing: 0.08em;
+    }
+    .hero-date {
+      display: inline-block;
+      background: #7030a0;
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px 28px;
+      margin-bottom: 8px;
+    }
+    .hero-date .date-main {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+    .hero-date .date-sub {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+    .hero-img {
+      width: min(280px, 70%);
+      margin: 20px auto 0;
+      display: block;
+      filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.25));
+    }
+
+    /* ===== セクション共通 ===== */
+    section {
+      padding: 36px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #7030a0;
+      text-align: center;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .section-title::before,
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #7030a0);
+    }
+    .section-title::after {
+      background: linear-gradient(to left, transparent, #7030a0);
+    }
+
+    /* ===== タイムライン ===== */
+    .timeline {
+      position: relative;
+      padding-left: 20px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, #7030a0, #43e343);
+      border-radius: 2px;
+    }
+    .tl-item {
+      position: relative;
+      padding: 0 0 24px 36px;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -6px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #7030a0;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #7030a0;
+    }
+    .tl-time {
+      font-size: 0.78rem;
+      color: #7030a0;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .tl-label {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #222;
+    }
+    .tl-note {
+      font-size: 0.82rem;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    /* ===== 企画カード ===== */
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .event-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px 12px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(112,48,160,0.12);
+      border-top: 4px solid #7030a0;
+    }
+    .event-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+    .event-card .card-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .event-card .card-note {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 4px;
+    }
+    .event-card.highlight {
+      grid-column: span 2;
+      border-top-color: #ffe600;
+      background: linear-gradient(135deg, #7030a0, #9b4dd1);
+      color: #fff;
+    }
+    .event-card.highlight .card-title { color: #fff; font-size: 1.1rem; }
+    .event-card.highlight .card-note { color: #e8c8ff; }
+
+    /* ===== 食べ物セクション ===== */
+    .food-badge {
+      display: inline-block;
+      background: #ffe600;
+      color: #7030a0;
+      font-weight: 900;
+      font-size: 0.85rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .food-list {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .food-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      min-width: 90px;
+    }
+    .food-item .food-icon { font-size: 2rem; margin-bottom: 4px; }
+    .food-item .food-name { font-size: 0.85rem; font-weight: bold; }
+
+    /* ===== アクセス ===== */
+    .access-box {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    }
+    .access-info {
+      padding: 16px;
+    }
+    .access-info p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: #444;
+    }
+    .access-info strong { color: #7030a0; }
+    .map-frame {
+      width: 100%;
+      height: 220px;
+      border: none;
+      display: block;
+    }
+
+    /* ===== 注意事項 ===== */
+    .notice-box {
+      background: #fff8e1;
+      border: 2px solid #ffe600;
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .notice-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .notice-box li {
+      font-size: 0.9rem;
+      color: #444;
+      line-height: 1.6;
+      padding-left: 1.4em;
+      position: relative;
+    }
+    .notice-box li::before {
+      content: '⚠️';
+      position: absolute;
+      left: -4px;
+      font-size: 0.85rem;
+    }
+    .cancel-rule {
+      background: #fce4ec;
+      border: 2px solid #e91e63;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: #880e4f;
+      line-height: 1.7;
+      font-weight: bold;
+    }
+
+    /* ===== CTAセクション ===== */
+    .cta-section {
+      background: linear-gradient(135deg, #7030a0, #4a1a70);
+      padding: 40px 20px;
+      text-align: center;
+      color: #fff;
+    }
+    .cta-section h2 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .cta-section p {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 6px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-line {
+      background: #06c755;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(6,199,85,0.5);
+    }
+    .btn-form {
+      background: #ffe600;
+      color: #7030a0;
+      box-shadow: 0 4px 16px rgba(255,230,0,0.5);
+    }
+    .btn-icon { font-size: 1.2rem; }
+
+    .cta-note {
+      font-size: 0.78rem;
+      opacity: 0.7;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    /* ===== お問い合わせ ===== */
+    .contact-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .contact-box p { font-size: 0.9rem; color: #555; line-height: 1.7; }
+    .contact-box a { color: #7030a0; font-weight: bold; text-decoration: none; }
+    .contact-name { font-weight: bold; font-size: 1rem; color: #333; margin-bottom: 8px; }
+
+    /* ===== フッター ===== */
+    footer {
+      background: #2a1040;
+      color: #ccc;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+
+    /* ===== 背景セクション交互 ===== */
+    .bg-white { background: #fff; }
+    .bg-light { background: #f0faf0; }
+  </style>
+</head>
+<body>
+
+  <!-- ★ 開催可否バナー（運営が編集） -->
+  <!-- 平常時: id="status-banner" のまま（非表示） -->
+  <!-- 全面中止時: class="show cancel" に変更 -->
+  <!-- 一部変更時: class="show partial" に変更 -->
+  <div id="status-banner" class="">
+    【重要】7月11日（土）のお祭りは中止となりました。詳しくはLINEをご確認ください。
+  </div>
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-label">令和8年 夏祭り</div>
+    <h1 class="hero-title">御船町の夏祭り</h1>
+    <p class="hero-subtitle">日天子祭典</p>
+    <div class="hero-date">
+      <div class="date-main">7月11日（土）</div>
+      <div class="date-sub">午後2時30分 集合</div>
+    </div>
+    <img class="hero-img" src="poster_images/image4.png" alt="こども神輿">
+  </div>
+
+  <!-- タイムライン -->
+  <div class="bg-white">
+    <section>
+      <h2 class="section-title">当日のスケジュール</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">午後 2:30</div>
+          <div class="tl-label">御船町共同館に集合</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">午後 3:00</div>
+          <div class="tl-label">日神社 祭典</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">午後 4:30</div>
+          <div class="tl-label">こども神輿 出発</div>
+          <div class="tl-note">（日神社より）</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">神輿の後</div>
+          <div class="tl-label">屋台・射的あそび</div>
+          <div class="tl-note">食事は無料でふるまいます</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 企画 -->
+  <div class="bg-light">
+    <section>
+      <h2 class="section-title">お楽しみ企画</h2>
+      <div class="event-grid">
+        <div class="event-card highlight">
+          <img src="poster_images/image4.png" alt="こども神輿" style="width:100px;height:100px;">
+          <div class="card-title">🏮 こども神輿</div>
+          <div class="card-note">法被を着てみんなで担ごう！</div>
+        </div>
+        <div class="event-card">
+          <img src="poster_images/image8.png" alt="射的">
+          <div class="card-title">射的あそび</div>
+          <div class="card-note">腕試しをしよう！</div>
+        </div>
+        <div class="event-card">
+          <img src="poster_images/image7.png" alt="やきそば">
+          <div class="card-title">やきそば屋台</div>
+          <div class="card-note" style="color:#e65100;font-weight:bold;">無料</div>
+        </div>
+        <div class="event-card">
+          <div style="font-size:2.5rem;margin-bottom:8px;">🌭</div>
+          <div class="card-title">フランクフルト</div>
+          <div class="card-note" style="color:#e65100;font-weight:bold;">無料</div>
+        </div>
+        <div class="event-card" style="grid-column: span 2;">
+          <img src="poster_images/image5.png" alt="かき氷" style="width:70px;height:90px;">
+          <div class="card-title">かき氷</div>
+          <div class="card-note" style="color:#e65100;font-weight:bold;">無料</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- アクセス -->
+  <div class="bg-white">
+    <section>
+      <h2 class="section-title">会場・アクセス</h2>
+      <div class="access-box">
+        <div style="background:#e8f5e9;display:flex;align-items:center;justify-content:center;height:120px;">
+          <a href="https://maps.google.com/?q=千葉県茂原市本納2870-2" target="_blank" rel="noopener"
+             style="display:inline-flex;align-items:center;gap:8px;background:#7030a0;color:#fff;padding:12px 24px;border-radius:50px;font-weight:bold;text-decoration:none;font-size:0.95rem;">
+            🗺️ Googleマップで開く
+          </a>
+        </div>
+        <div class="access-info">
+          <p>
+            <strong>御船町共同館</strong><br>
+            〒299-3251　千葉県茂原市本納2870-2<br>
+            <br>
+            ※お車でお越しの方は付近の路地にご配慮ください。
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 注意事項 -->
+  <div class="bg-light">
+    <section>
+      <h2 class="section-title">参加にあたって</h2>
+      <div class="notice-box">
+        <ul>
+          <li>屋台の食事（やきそば・フランクフルト・かき氷）は<strong>無料</strong>でふるまいます。</li>
+          <li>傷害保険（ケガ・熱中症・食中毒）に加入します。費用は運営側負担。保険加入のため事前登録が必要です。</li>
+          <li>当日の服装は動きやすい格好でお越しください。法被の貸し出しあり。</li>
+          <li>熱中症対策として水分補給をこまめに行ってください。</li>
+        </ul>
+        <div class="cancel-rule">
+          🌧️ 中止・変更ルール<br>
+          ・雨天の場合 → <strong>お祭り全て中止</strong><br>
+          ・前日または当日朝に熱中症警戒アラートが発令された場合 → <strong>こども神輿は中止・屋台は実施</strong><br>
+          <br>
+          開催可否は<strong>前日夜・当日朝7時</strong>にLINEでお知らせします。
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>参加登録・開催情報の受け取り</h2>
+    <p>
+      LINEを友だち追加して<br>
+      参加登録フォームへお進みください。<br>
+      開催可否もLINEでお知らせします。
+    </p>
+
+    <!-- LINE友だち追加ボタン（URLはLINE管理画面で確認） -->
+    <a class="btn btn-line" href="https://lin.ee/uEk93l2" target="_blank" rel="noopener">
+      <span class="btn-icon">💬</span> LINEで友だち追加
+    </a>
+
+    <br>
+
+    <!-- 直接フォームに進む場合 -->
+    <a class="btn btn-form" href="https://forms.gle/cku2YWYon7zXA3q86" target="_blank" rel="noopener">
+      <span class="btn-icon">📝</span> 参加登録フォーム
+    </a>
+
+    <p class="cta-note">
+      ※ LINEを友だち追加すると、フォームURLが自動で届きます。<br>
+      ※ お子さんが4人以上の場合は3人ずつフォームを2回送信してください。<br>
+      ※ 入力いただいた情報は保険加入目的以外には使用しません。
+    </p>
+  </div>
+
+  <!-- お問い合わせ -->
+  <div class="bg-white">
+    <section>
+      <h2 class="section-title">お問い合わせ</h2>
+      <div class="contact-box">
+        <div class="contact-name">御船町若衆連</div>
+        <p>
+          <a href="mailto:honnoh.mifunecho@gmail.com">✉️ honnoh.mifunecho@gmail.com</a>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- フッター -->
+  <footer>
+    <p>本納・御船町の夏祭り（日天子祭典）</p>
+    <p>主催：御船町若衆連</p>
+    <p style="margin-top:8px;font-size:0.72rem;">
+      © 2026 御船町若衆連. All rights reserved.
+    </p>
+  </footer>
+
+</body>
+</html>
