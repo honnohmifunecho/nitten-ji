@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- stick -->
+  <rect x="93" y="80" width="14" height="110" rx="5" fill="#8B6914"/>
+  <!-- sausage shadow -->
+  <ellipse cx="102" cy="88" rx="55" ry="28" fill="#8B2500" transform="rotate(-20,102,88)" opacity="0.4"/>
+  <!-- sausage body -->
+  <ellipse cx="100" cy="82" rx="55" ry="26" fill="#C0392B" transform="rotate(-20,100,82)"/>
+  <!-- sausage highlight -->
+  <ellipse cx="88" cy="68" rx="22" ry="10" fill="#E74C3C" transform="rotate(-20,88,68)" opacity="0.7"/>
+  <!-- grill marks -->
+  <line x1="68" y1="90" x2="92" y2="65" stroke="#7B241C" stroke-width="3" stroke-linecap="round"/>
+  <line x1="82" y1="98" x2="106" y2="73" stroke="#7B241C" stroke-width="3" stroke-linecap="round"/>
+  <line x1="96" y1="104" x2="120" y2="79" stroke="#7B241C" stroke-width="3" stroke-linecap="round"/>
+  <!-- shine -->
+  <ellipse cx="78" cy="66" rx="12" ry="6" fill="white" opacity="0.25" transform="rotate(-20,78,66)"/>
+</svg>
