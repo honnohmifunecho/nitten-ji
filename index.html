@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>本納・御船町の夏祭り 令和8年</title>
+  <!-- OGP（LINE・SNSリンクプレビュー用） -->
+  <meta property="og:title" content="本納・御船町の夏祭り 令和8年（日天子祭典）">
+  <meta property="og:description" content="7月11日（土）午後2時30分、御船町共同館に集合！こども神輿・屋台・射的あそびなど盛りだくさん。食事はすべて無料！">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://honnohmifunecho.github.io/nitten-ji/">
+  <meta property="og:image" content="https://honnohmifunecho.github.io/nitten-ji/画像/DSC_0672ぼかし.png">
+  <meta name="description" content="7月11日（土）午後2時30分、御船町共同館に集合！こども神輿・屋台・射的あそびなど盛りだくさん。食事はすべて無料！">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -702,10 +709,21 @@
 <body>
 
   <!-- 開催可否バナー（運営編集用） -->
-  <!-- 全面中止: class="show cancel" / 神輿のみ中止: class="show partial" -->
-  <div id="status-banner" class="">
-    【重要】7月11日（土）のお祭りは中止となりました。詳しくはLINEをご確認ください。
-  </div>
+  <!-- STATUS: "" = 通常開催 / "cancel" = 全面中止 / "partial" = 神輿のみ中止 -->
+  <div id="status-banner" class=""></div>
+  <script>
+    (function(){
+      var banner = document.getElementById('status-banner');
+      var status = ''; // ← ここを変更: "" / "cancel" / "partial"
+      if(status === 'cancel'){
+        banner.className = 'show cancel';
+        banner.textContent = '【重要】7月11日（土）のお祭りは中止となりました。詳しくはLINEをご確認ください。';
+      } else if(status === 'partial'){
+        banner.className = 'show partial';
+        banner.textContent = '【重要】こども神輿は中止です。屋台・射的は予定通り実施します。詳しくはLINEをご確認ください。';
+      }
+    })();
+  </script>
 
   <!-- ヒーロー＋ギャラリー共通ラッパー -->
   <div style="background: linear-gradient(180deg, #1a7a30 0%, #2db34a 30%, #7fe87a 60%, #c8f5d4 80%, #e8fff0 100%);">
